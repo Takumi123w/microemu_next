@@ -74,13 +74,16 @@ public class J2SEButtonDefaultKeyCodes {
 	}
 
 	static {
-		code(ButtonName.SOFT1, KeyEvent.VK_F1);
-		code(ButtonName.SOFT2, KeyEvent.VK_F2);
+		code(ButtonName.SOFT1, KeyEvent.VK_F1, KeyEvent.VK_PAGE_UP);
+		code(ButtonName.SOFT2, KeyEvent.VK_F2, KeyEvent.VK_PAGE_DOWN);
 		code(ButtonName.SELECT, KeyEvent.VK_ENTER);
 		code(ButtonName.UP, KeyEvent.VK_UP, KeyEvent.VK_KP_UP);
 		code(ButtonName.DOWN, KeyEvent.VK_DOWN, KeyEvent.VK_KP_DOWN);
 		code(ButtonName.LEFT, KeyEvent.VK_LEFT, KeyEvent.VK_KP_LEFT);
 		code(ButtonName.RIGHT, KeyEvent.VK_RIGHT, KeyEvent.VK_KP_RIGHT);
+
+		code(ButtonName.SEND, KeyEvent.VK_F3);
+		code(ButtonName.END, KeyEvent.VK_F4, KeyEvent.VK_ESCAPE);
 
 		// code(ButtonName.BACK, KeyEvent.VK_HOME);
 		code(ButtonName.BACK_SPACE, KeyEvent.VK_BACK_SPACE);

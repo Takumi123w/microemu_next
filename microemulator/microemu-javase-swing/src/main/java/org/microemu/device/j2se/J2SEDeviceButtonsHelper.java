@@ -111,9 +111,25 @@ public class J2SEDeviceButtonsHelper {
 		return inf;
 	}
 
+	private static void ensureButton(Device dev, ButtonName name) {
+		for (Enumeration en = dev.getButtons().elements(); en.hasMoreElements();) {
+			J2SEButton button = (J2SEButton) en.nextElement();
+			if (button.getFunctionalName() == name) {
+				return;
+			}
+		}
+		dev.getButtons().add(new J2SEButton(name));
+	}
+
 	private static DeviceInformation createDeviceInformation(Device dev) {
 		DeviceInformation inf = new DeviceInformation();
 		boolean hasModeChange = false;
+
+		// Nokia style keys that device.xml does not have to define
+		ensureButton(dev, ButtonName.SEND);
+		ensureButton(dev, ButtonName.END);
+		ensureButton(dev, ButtonName.DELETE);
+		ensureButton(dev, ButtonName.BACK_SPACE);
 		for (Enumeration en = dev.getButtons().elements(); en.hasMoreElements();) {
 			J2SEButton button = (J2SEButton) en.nextElement();
 			int keyCodes[] = button.getKeyboardKeyCodes();
@@ -140,12 +156,6 @@ public class J2SEDeviceButtonsHelper {
 			}
 		}
 
-		if (inf.functions.get(ButtonName.DELETE) == null) {
-			dev.getButtons().add(new J2SEButton(ButtonName.DELETE));
-		}
-		if (inf.functions.get(ButtonName.BACK_SPACE) == null) {
-			dev.getButtons().add(new J2SEButton(ButtonName.BACK_SPACE));
-		}
 		return inf;
 	}
 }

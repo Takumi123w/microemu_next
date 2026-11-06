@@ -59,6 +59,12 @@ public final class ButtonName {
 
 	public static final ButtonName RIGHT = new ButtonName("R");
 
+	/** Nokia green call key, key code -10 */
+	public static final ButtonName SEND = new ButtonName();
+
+	/** Nokia red end key, key code -11 */
+	public static final ButtonName END = new ButtonName();
+
 	// public static final ButtonName BACK = new ButtonName();
 
 	public static final ButtonName BACK_SPACE = new ButtonName();

@@ -991,6 +991,13 @@ public class Main extends JFrame {
             SoftButton button = (SoftButton) en.nextElement();
             Rectangle paintable = button.getPaintable();
             paintable.y = height - paintable.height;
+            if ("SOFT1".equals(button.getName())) {
+                paintable.x = 1;
+                paintable.width = width / 2 - 1;
+            } else if ("SOFT2".equals(button.getName())) {
+                paintable.x = width / 2;
+                paintable.width = width - width / 2 - 1;
+            }
             menuh = paintable.height;
         }
         // resize the display area

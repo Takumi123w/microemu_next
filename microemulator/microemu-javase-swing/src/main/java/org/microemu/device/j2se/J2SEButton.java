@@ -168,6 +168,10 @@ public class J2SEButton implements Button {
 	}
 
 	public char[] getChars(int inputMode) {
+		if (inputToChars == null) {
+			// button created in code, not from device.xml: it types no characters
+			return new char[0];
+		}
 		char[] result = null;
 		switch (inputMode) {
 		case InputMethod.INPUT_123:

@@ -154,7 +154,10 @@ public class J2SEInputMethod extends InputMethodImpl {
 			keyCode = button.getKeyCode();
 		}
 
-		if (inputMethodListener == null) {
+		// A Canvas never edits text. A TextField left focused in a Form that was
+		// replaced by a Canvas keeps its listener registered, which swallowed
+		// LEFT and RIGHT (caret movement), so ignore the listener on a Canvas.
+		if (inputMethodListener == null || da.getCurrent() instanceof javax.microedition.lcdui.Canvas) {
 			da.keyPressed(keyCode);
 			return true;
 		}
@@ -166,6 +169,13 @@ public class J2SEInputMethod extends InputMethodImpl {
 		ButtonName functionalName = button.getFunctionalName();
 
 		if (functionalName == ButtonName.UP || functionalName == ButtonName.DOWN) {
+			da.keyPressed(button.getKeyCode());
+			return true;
+		}
+
+		// Centre (fire), Send and End never type text: deliver them to the MIDlet
+		if (functionalName == ButtonName.SELECT || functionalName == ButtonName.SEND
+				|| functionalName == ButtonName.END) {
 			da.keyPressed(button.getKeyCode());
 			return true;
 		}

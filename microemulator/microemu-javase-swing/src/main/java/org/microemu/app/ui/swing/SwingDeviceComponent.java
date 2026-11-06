@@ -82,6 +82,11 @@ public class SwingDeviceComponent extends JPanel implements KeyListener, InputMe
 
 	SwingDisplayComponent dc;
 
+	private NokiaKeypadPanel keypad;
+
+	// centres the keypad below the screen, keeps it outside the display area
+	private JPanel keypadHolder;
+
 	J2SEButton prevOverButton;
 
 	J2SEButton overButton;
@@ -279,15 +284,27 @@ public class SwingDeviceComponent extends JPanel implements KeyListener, InputMe
 
 	public SwingDeviceComponent() {
 		dc = new SwingDisplayComponent(this);
-		setLayout(new XYLayout());
+		setLayout(new java.awt.BorderLayout());
+		keypad = new NokiaKeypadPanel();
+		keypadHolder = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+		keypadHolder.add(keypad);
 
-		addMouseListener(mouseListener);
-		addMouseMotionListener(mouseMotionListener);
+		// skin removed: no skin mouse handling, the keypad panel has real buttons
 		
  		//Input methods support begin
  		enableInputMethods(true);
  		addInputMethodListener(this);
  		//End
+	}
+
+	/**
+	 * Size of the area that is the phone screen: the whole panel minus the
+	 * keypad below it. Resizable devices must use this, not getWidth() and
+	 * getHeight(), or the screen is made taller than it is shown.
+	 */
+	public Dimension getDisplayAreaSize() {
+		int keypadHeight = keypadHolder.getPreferredSize().height;
+		return new Dimension(Math.max(1, getWidth()), Math.max(1, getHeight() - keypadHeight));
 	}
 
 	public DisplayComponent getDisplayComponent() {
@@ -298,9 +315,10 @@ public class SwingDeviceComponent extends JPanel implements KeyListener, InputMe
 		dc.init();
 
 		remove(dc);
+		remove(keypadHolder);
 
-		Rectangle r = ((J2SEDeviceDisplay) DeviceFactory.getDevice().getDeviceDisplay()).getDisplayRectangle();
-		add(dc, new XYConstraints(r.x, r.y, -1, -1));
+		add(dc, java.awt.BorderLayout.CENTER);
+		add(keypadHolder, java.awt.BorderLayout.SOUTH);
 
 		revalidate();
 	}
@@ -507,63 +525,8 @@ public class SwingDeviceComponent extends JPanel implements KeyListener, InputMe
 	}
 
 	protected void paintComponent(Graphics g) {
-		if (offg == null || offi.getWidth(null) != getSize().width || offi.getHeight(null) != getSize().height) {
-			offi = new J2SEMutableImage(getSize().width, getSize().height, false, 0x000000).getImage();
-			offg = offi.getGraphics();
-		}
-
-		Dimension size = getSize();
-		offg.setColor(UIManager.getColor("text"));
-		try {
-			offg.fillRect(0, 0, size.width, size.height);
-		} catch (NullPointerException ex) {
-			// Fix for NPE in sun.java2d.pipe.SpanShapeRenderer.renderRect(..) on Mac platform
-		}
-		Device device = DeviceFactory.getDevice();
-		if (device == null) {
-			g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-			return;
-		}
-		if (((DeviceDisplayImpl) device.getDeviceDisplay()).isResizable()) {
-			return;
-		}
-
-		offg.drawImage(((J2SEImmutableImage) device.getNormalImage()).getImage(), 0, 0, this);
-
-		if (prevOverButton != null) {
-			org.microemu.device.impl.Shape shape = prevOverButton.getShape();
-			if (shape != null) {
-				drawImageInShape(offg, ((J2SEImmutableImage) device.getNormalImage()).getImage(), shape);
-			}
-			prevOverButton = null;
-		}
-		if (overButton != null) {
-			org.microemu.device.impl.Shape shape = overButton.getShape();
-			if (shape != null) {
-				drawImageInShape(offg, ((J2SEImmutableImage) device.getOverImage()).getImage(), shape);
-			}
-		}
-		if (pressedButton != null) {
-			org.microemu.device.impl.Shape shape = pressedButton.getShape();
-			if (shape != null) {
-				drawImageInShape(offg, ((J2SEImmutableImage) device.getPressedImage()).getImage(), shape);
-			}
-		}
-
-		g.drawImage(offi, 0, 0, null);
-	}
-
-	private void drawImageInShape(Graphics g, Image image, org.microemu.device.impl.Shape shape) {
-		Shape clipSave = g.getClip();
-		if (shape instanceof org.microemu.device.impl.Polygon) {
-			Polygon poly = new Polygon(((org.microemu.device.impl.Polygon) shape).xpoints,
-					((org.microemu.device.impl.Polygon) shape).ypoints,
-					((org.microemu.device.impl.Polygon) shape).npoints);
-			g.setClip(poly);
-		}
-		org.microemu.device.impl.Rectangle r = shape.getBounds();
-		g.drawImage(image, r.x, r.y, r.x + r.width, r.y + r.height, r.x, r.y, r.x + r.width, r.y + r.height, null);
-		g.setClip(clipSave);
+		g.setColor(UIManager.getColor("Panel.background"));
+		g.fillRect(0, 0, getWidth(), getHeight());
 	}
 
 	public Dimension getPreferredSize() {
@@ -571,14 +534,9 @@ public class SwingDeviceComponent extends JPanel implements KeyListener, InputMe
 		if (device == null) {
 			return new Dimension(0, 0);
 		}
-
-		DeviceDisplayImpl deviceDisplay = (DeviceDisplayImpl) DeviceFactory.getDevice().getDeviceDisplay();
-		if (deviceDisplay.isResizable()) {
-			return new Dimension(deviceDisplay.getFullWidth(), deviceDisplay.getFullHeight());
-		} else {
-			javax.microedition.lcdui.Image img = device.getNormalImage();
-			return new Dimension(img.getWidth(), img.getHeight());
-		}
+		Dimension d = dc.getPreferredSize();
+		Dimension k = keypadHolder.getPreferredSize();
+		return new Dimension(Math.max(d.width, k.width), d.height + k.height);
 	}
 
 }

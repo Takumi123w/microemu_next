@@ -51,6 +51,9 @@ public abstract class ButtonDetaultDeviceKeyCodes {
 
 	private static Map gameActions = new HashMap();
 
+	// button used for Canvas.getKeyCode(gameAction), the d-pad wins over number keys
+	private static Map primaryGameActions = new HashMap();
+
 	public static int getKeyCode(ButtonName name) {
 		Integer code = (Integer) codes.get(name);
 		if (code != null) {
@@ -69,8 +72,8 @@ public abstract class ButtonDetaultDeviceKeyCodes {
 
 	public static ButtonName getButtonNameByGameAction(int gameAction) {
 		Integer value = new Integer(gameAction);
-		if (gameActions.containsValue(value)) {
-			for (Iterator iterator = gameActions.entrySet().iterator(); iterator.hasNext();) {
+		if (primaryGameActions.containsValue(value)) {
+			for (Iterator iterator = primaryGameActions.entrySet().iterator(); iterator.hasNext();) {
 				Map.Entry v = (Map.Entry) iterator.next();
 				if (v.getValue().equals(value)) {
 					return (ButtonName) v.getKey();
@@ -90,6 +93,8 @@ public abstract class ButtonDetaultDeviceKeyCodes {
 		code(ButtonName.RIGHT, -4, Canvas.RIGHT);
 
 		code(ButtonName.BACK_SPACE, -8);
+		code(ButtonName.SEND, -10);
+		code(ButtonName.END, -11);
 
 		code(ButtonName.KEY_NUM0, Canvas.KEY_NUM0);
 		code(ButtonName.KEY_NUM1, Canvas.KEY_NUM1, Canvas.GAME_A);
@@ -103,6 +108,13 @@ public abstract class ButtonDetaultDeviceKeyCodes {
 		code(ButtonName.KEY_NUM9, Canvas.KEY_NUM9, Canvas.GAME_D);
 		code(ButtonName.KEY_STAR, Canvas.KEY_STAR);
 		code(ButtonName.KEY_POUND, Canvas.KEY_POUND);
+
+		// Real Nokia: number keys also report game actions in Canvas.getGameAction()
+		alias(ButtonName.KEY_NUM2, Canvas.UP);
+		alias(ButtonName.KEY_NUM4, Canvas.LEFT);
+		alias(ButtonName.KEY_NUM6, Canvas.RIGHT);
+		alias(ButtonName.KEY_NUM8, Canvas.DOWN);
+		alias(ButtonName.KEY_NUM5, Canvas.FIRE);
 	}
 
 	private static void code(ButtonName name, int code) {
@@ -111,6 +123,11 @@ public abstract class ButtonDetaultDeviceKeyCodes {
 
 	private static void code(ButtonName name, int code, int gameAction) {
 		code(name, code);
+		gameActions.put(name, new Integer(gameAction));
+		primaryGameActions.put(name, new Integer(gameAction));
+	}
+
+	private static void alias(ButtonName name, int gameAction) {
 		gameActions.put(name, new Integer(gameAction));
 	}
 }
