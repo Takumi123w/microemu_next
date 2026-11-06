@@ -27,54 +27,15 @@
                 <optional>true</optional>
             </dependency>
 
-            <dependency>
-                <groupId>net.sf.jour</groupId>
-                <artifactId>jour-instrument</artifactId>
-                <scope>test</scope>
-                <optional>true</optional>
-            </dependency>
+            
 
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>${pyx4meVersion}</version>
-                <executions>
-                   <execution>
-                       <phase>package</phase>
-                       <goals><goal>proguard</goal></goals>
-                   </execution>
-                </executions>
-                <configuration>
-                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
-                    <attach>true</attach>
-                    <attachArtifactClassifier>4applet</attachArtifactClassifier>
-                    <libs>
-                        <lib>${javaRunTimeJar}</lib>
-                    </libs>
-                </configuration>
-            </plugin>
+            
 
-            <plugin>
-                <groupId>net.sf.jour</groupId>
-                <artifactId>jour-maven-plugin</artifactId>
-                <version>${jourVersion}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>signatureVerify</goal>
-                        </goals>
-                        <configuration>
-                            <allowAPIextension>false</allowAPIextension>
-                            <level>protected</level>
-                            <signature>${basedir}/src/test/resources/cldcapi_10_11-javax.microedition.io-signature.xml</signature>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            
 
         </plugins>
     </build>

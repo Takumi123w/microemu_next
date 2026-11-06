@@ -42,11 +42,22 @@
             <groupId>org.microemu</groupId>
             <artifactId>microemu-injected</artifactId>
             <version>${project.version}</version>
-            <classifier>inject</classifier>
             <optional>true</optional>
         </dependency>
 
-    </dependencies>
+    
+    <dependency>
+      <groupId>org.microemu</groupId>
+      <artifactId>microemu-javase</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.microemu</groupId>
+      <artifactId>microemu-midp</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+</dependencies>
 
     <build>
         <plugins>
@@ -81,41 +92,41 @@
             </plugin>
 
             <!-- app jar-with-dependencies -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${assemblyPluginVersion}</version>
-                <executions>
-                    <execution>
-                       <id>jar-with-dependencies</id>
-                       <phase>package</phase>
-                       <goals><goal>single</goal></goals>
-                       <configuration>
-                           <attach>true</attach>
-                           <appendAssemblyId>false</appendAssemblyId>
-                           <descriptors>
-                               <descriptor>assembly-app.xml</descriptor>
-                           </descriptors>
-                           <archive>
-                                <manifestFile>${project.build.directory}/assembly.manifest</manifestFile>
-                                <!-- this does not work, if manifestFile is used -->
-                                <manifest>
-                                    <mainClass>org.microemu.app.Main</mainClass>
-                                </manifest>
-                                <!-- this does not work, bug http://jira.codehaus.org/browse/MASSEMBLY-188 -->
-                                <manifestEntries>
-                                    <Implementation-Version>${project.version}</Implementation-Version>
-                                    <Implementation-Build>${label}</Implementation-Build>
-                                    <Build-Date>${cctimestamp}</Build-Date>
-                                    <SVN-Revision>${scm.revision}</SVN-Revision>
-                                    <License>GNU Lesser General Public License (LGPL)</License>
-                                </manifestEntries>
-                            </archive>
-                       </configuration>
-                    </execution>
-               </executions>
-            </plugin>
+            
 
-        </plugins>
+        
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.microemu.app.Main</mainClass>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+</plugins>
     </build>
 
     <profiles>
@@ -173,58 +184,40 @@
                         </executions>
                     </plugin>
 
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <version>${assemblyPluginVersion}</version>
-                        <executions>
-                            <execution>
-                                <id>sources-jar</id>
-                                <phase>package</phase>
-                                <goals><goal>single</goal></goals>
-                                <configuration>
-                                    <attach>true</attach>
-                                    <descriptors>
-                                        <descriptor>assembly-sources.xml</descriptor>
-                                    </descriptors>
-                                    <archive>
-                                        <manifestEntries>
-                                            <Version>${label}</Version>
-                                            <Build-Time>${cctimestamp}</Build-Time>
-                                            <Implementation-Version>${project.version}</Implementation-Version>
-                                            <SVN-Revision>${scm.revision}</SVN-Revision>
-                                            <License>GNU Lesser General Public License (LGPL)</License>
-                                        </manifestEntries>
-                                    </archive>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>all-sources-gz</id>
-                                <phase>install</phase>
-                                <goals><goal>single</goal></goals>
-                                <configuration>
-                                    <attach>false</attach>
-                                    <tarLongFileMode>gnu</tarLongFileMode>
-                                    <descriptors>
-                                        <descriptor>assembly-all-sources.xml</descriptor>
-                                    </descriptors>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>release-package-gz</id>
-                                <phase>install</phase>
-                                <goals><goal>single</goal></goals>
-                                <configuration>
-                                    <attach>false</attach>
-                                    <appendAssemblyId>false</appendAssemblyId>
-                                    <tarLongFileMode>gnu</tarLongFileMode>
-                                    <descriptors>
-                                        <descriptor>assembly-release.xml</descriptor>
-                                    </descriptors>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
+                    
+                
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.microemu.app.Main</mainClass>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+</plugins>
             </build>
         </profile>
 

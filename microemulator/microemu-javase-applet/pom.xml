@@ -29,7 +29,6 @@
             <groupId>org.microemu</groupId>
             <artifactId>microemu-cldc</artifactId>
             <version>${project.version}</version>
-            <classifier>4applet</classifier>
             <optional>true</optional>
         </dependency>
 
@@ -37,7 +36,6 @@
             <groupId>org.microemu</groupId>
             <artifactId>microemu-midp</artifactId>
             <version>${project.version}</version>
-            <classifier>4applet</classifier>
             <exclusions>
                 <exclusion>
                     <groupId>org.microemu</groupId><artifactId>microemu-cldc</artifactId>
@@ -46,27 +44,7 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>org.microemu</groupId>
-            <artifactId>microemu-javase-swing</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <!-- this is bug in maven 2.0.4., if used artifact with classifier would be exclused as well -->
-                <exclusion>
-                    <groupId>org.microemu</groupId><artifactId>microemu-cldc</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.microemu</groupId><artifactId>microemu-midp</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.microemu</groupId><artifactId>microemu-injected</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>asm</groupId><artifactId>asm</artifactId>
-                </exclusion>
-            </exclusions>
-            <optional>true</optional>
-        </dependency>
+        
 
     </dependencies>
 
@@ -87,78 +65,10 @@
             </plugin>
 
             <!-- applet-debug jar-with-dependencies -->
-            <plugin>
-               <artifactId>maven-assembly-plugin</artifactId>
-               <version>${assemblyPluginVersion}</version>
-               <executions>
-                   <execution>
-                       <phase>package</phase>
-                       <goals><goal>single</goal></goals>
-                   </execution>
-               </executions>
-               <configuration>
-                   <attach>true</attach>
-                   <descriptors>
-                       <descriptor>applet-debug-assembly.xml</descriptor>
-                   </descriptors>
-               </configuration>
-            </plugin>
+            
 
             <!-- applet jar-with-dependencies -->
-            <plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>${pyx4meVersion}</version>
-                <executions>
-                   <execution>
-                       <phase>package</phase>
-                       <goals><goal>proguard</goal></goals>
-                   </execution>
-                </executions>
-                <configuration>
-                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
-                    <attach>true</attach>
-                    <appendClassifier>false</appendClassifier>
-                    <assembly>
-                        <inclusions>
-                            <inclusion>
-                                <groupId>org.microemu</groupId><artifactId>microemu-cldc</artifactId><classifier>4applet</classifier><library>true</library>
-                            </inclusion>
-                            <inclusion>
-                                <groupId>org.microemu</groupId><artifactId>microemu-midp</artifactId><classifier>4applet</classifier><library>true</library>
-                            </inclusion>
-                            <inclusion>
-                                <groupId>org.microemu</groupId><artifactId>microemu-javase</artifactId>
-                                <filter>!org/microemu/app/classloader/**</filter>
-                            </inclusion>
-                            <inclusion>
-                                <groupId>org.microemu</groupId><artifactId>microemu-javase-swing</artifactId>
-                            </inclusion>
-                        </inclusions>
-                    </assembly>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.microemu</groupId><artifactId>microemu-cldc</artifactId>
-                        </exclusion>
-                        <exclusion>
-                            <groupId>org.microemu</groupId><artifactId>microemu-midp</artifactId>
-                        </exclusion>
-                    </exclusions>
-                    <libs>
-                        <lib>${javaRunTimeJar}</lib>
-                        <lib>${javaRunTimeSecurityJar}</lib>
-                    </libs>
-                    <archive>
-                        <manifestEntries>
-                            <Version>${label}</Version>
-                            <Build-Time>${cctimestamp}</Build-Time>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <SVN-Revision>${scm.revision}</SVN-Revision>
-                            <License>GNU Lesser General Public License (LGPL)</License>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
+            
 
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>

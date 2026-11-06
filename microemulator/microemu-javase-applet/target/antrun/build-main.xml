@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <copy todir="/home/takurukagami/microemulator/microemulator/microemu-javase-applet" failonerror="false" overwrite="true">
+    <fileset dir="/home/takurukagami/microemulator/microemulator/microemu-javase-applet/src/html-templates"/>
+  </copy>
+  <replace dir="/home/takurukagami/microemulator/microemulator/microemu-javase-applet">
+    <include name="*.html"></include>
+    <replacefilter value="3.0.0-SNAPSHOT" token="#version#"/>
+  </replace>
+</target>
+</project>

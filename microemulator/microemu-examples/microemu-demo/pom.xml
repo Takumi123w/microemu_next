@@ -48,11 +48,9 @@
                 <configuration>
                     <source>1.3</source>
                     <target>1.1</target>
-                    <compilerArguments>
-                        <bootclasspath>${basedir}/../../api/cldcapi11/target/cldcapi11-${project.version}.jar${path.separator}${basedir}/../../api/midpapi20/target/midpapi20-${project.version}.jar</bootclasspath>
-                   </compilerArguments>
+                    
                    <!--compilerArguments>
-                        <bootclasspath>${env.WTK_HOME}/lib/cldcapi11.jar${path.separator}${env.WTK_HOME}/lib/midpapi20.jar</bootclasspath>
+                        
                    </compilerArguments-->
                 </configuration>
             </plugin>
@@ -78,57 +76,7 @@
             </plugin>
 
             <!-- Create application loadable on the phone -->
-            <plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>j2me-maven-plugin</artifactId>
-                <version>${pyx4meVersion}</version>
-                <executions>
-                   <execution>
-                        <goals>
-                            <goal>package</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!--wtkHome>${env.WTK_HOME}</wtkHome-->
-                    <useWtkLibs>false</useWtkLibs>
-                    <proguard>false</proguard>
-                    <obfuscate>false</obfuscate>
-                    <proguardPreverify>${wtkNotSupported}</proguardPreverify>
-                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
-                    <proguardOptions>
-                        <options>
-                            <option>-overloadaggressively</option>
-                            <option>-dontoptimize</option>
-                            <option>-allowaccessmodification</option>
-                            <option>-defaultpackage 'me2e'</option>
-                            <option>-dontusemixedcaseclassnames</option>
-                        </options>
-                    </proguardOptions>
-                    <jadAttributes>
-                        <Created-By>Bartek Teodorczyk</Created-By>
-                    </jadAttributes>
-                    <midlets>
-                        <MIDlet>
-                            <name>SimpleDemo</name>
-                            <icon>/me2-icon.png</icon>
-                            <class>org.microemu.midp.examples.simpledemo.SimpleDemoMIDlet</class>
-                        </MIDlet>
-                    </midlets>
-                    <libs>
-                        <lib>${basedir}/../../api/cldcapi11/target/cldcapi11-${project.version}.jar</lib>
-                        <lib>${basedir}/../../api/midpapi20/target/midpapi20-${project.version}.jar</lib>
-                    </libs>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.microemu</groupId>
-                            <artifactId>microemu-javase-swing</artifactId>
-                            <exclude>true</exclude>
-                            <withTrail>true</withTrail>
-                        </dependency>
-                    </dependencies>
-                </configuration>
-            </plugin>
+            
 
             <!--
             <plugin>

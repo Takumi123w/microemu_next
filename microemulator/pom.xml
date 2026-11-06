@@ -148,7 +148,7 @@
         <!-- See OS X profile -->
         <javaRunTimeJar>${java.home}/lib/rt.jar</javaRunTimeJar>
         <javaRunTimeSecurityJar>${java.home}/lib/jsse.jar</javaRunTimeSecurityJar>
-        <assemblyPluginVersion>2.2-beta-1</assemblyPluginVersion>
+        <assemblyPluginVersion>2.6</assemblyPluginVersion>
 
         <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
     </properties>
@@ -170,11 +170,7 @@
             </dependency>
 -->
 
-            <dependency>
-                <groupId>asm</groupId>
-                <artifactId>asm</artifactId>
-                <version>3.1</version>
-            </dependency>
+            
 
             <dependency>
                 <groupId>junit</groupId>
@@ -183,13 +179,7 @@
                 <scope>test</scope>
             </dependency>
 
-            <dependency>
-                <groupId>net.sf.jour</groupId>
-                <artifactId>jour-instrument</artifactId>
-                <version>${jourVersion}</version>
-                <scope>test</scope>
-                <optional>true</optional>
-            </dependency>
+            
 
         </dependencies>
     </dependencyManagement>
@@ -314,18 +304,7 @@
         <pluginManagement>
             <plugins>
                 <!-- m2bug; the same dependencies declared in microemu-test-midlet and api stub projects will not work if building from root -->
-                <plugin>
-                    <groupId>net.sf.jour</groupId>
-                    <artifactId>jour-maven-plugin</artifactId>
-                    <version>${jourVersion}</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.pyx4me</groupId>
-                            <artifactId>cldcunit-instrument</artifactId>
-                            <version>${pyx4meVersion}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
+                
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -388,13 +367,7 @@
                     <version>2.8</version>
                 </plugin>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>${assemblyPluginVersion}</version>
-                </plugin>
-
-            </plugins>
+</plugins>
         </pluginManagement>
 
         <plugins>
@@ -452,7 +425,35 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
+
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.6</version>
+            <executions>
+              <execution>
+                <id>make-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>org.microemu.app.Main</mainClass>
+                </manifest>
+              </archive>
+              <descriptors>
+                <descriptor>src/main/assembly/fat-jar.xml</descriptor>
+              </descriptors>
+              <appendAssemblyId>false</appendAssemblyId>
+            </configuration>
+          </plugin>
+
+    </plugins>
 
     </build>
 
@@ -541,7 +542,8 @@
                         </executions>
                     </plugin>
             -->
-                </plugins>
+
+</plugins>
             </build>
 
         </profile>
@@ -610,7 +612,8 @@
                             </reportPlugins>
                         </configuration>
                     </plugin>
-                </plugins>
+
+</plugins>
             </build>
         </profile>
 
@@ -634,7 +637,8 @@
                             <outputEncoding>UTF-8</outputEncoding>
                         </configuration>
                     </plugin>
-                </plugins>
+
+</plugins>
             </build>
 
             <reporting>
@@ -753,7 +757,8 @@
                           </reportSet>
                         </reportSets>
                     </plugin>
-                </plugins>
+
+</plugins>
             </reporting>
         </profile>
 

@@ -69,9 +69,7 @@
                 <configuration>
                     <source>1.3</source>
                     <target>1.1</target>
-                    <compilerArguments>
-                        <bootclasspath>${basedir}/../../api/cldcapi11/target/cldcapi11-${project.version}.jar${path.separator}${basedir}/../../api/midpapi20/target/midpapi20-${project.version}.jar</bootclasspath>
-                   </compilerArguments>
+                    
                 </configuration>
             </plugin>
 
@@ -98,51 +96,7 @@
             -->
 
             <!-- Create application loadable on the phone -->
-            <plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>j2me-maven-plugin</artifactId>
-                <version>${pyx4meVersion}</version>
-                <executions>
-                   <execution>
-                        <goals>
-                            <goal>package</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <useWtkLibs>false</useWtkLibs>
-                    <proguard>true</proguard>
-                    <obfuscate>false</obfuscate>
-                    <proguardPreverify>true</proguardPreverify>
-                    <test>false</test>
-                    <jadAttributes>
-                        <Created-By>Vlad Skarzhevskyy</Created-By>
-                    </jadAttributes>
-                    <midlets>
-                        <MIDlet>
-                            <name>FileBrowser</name>
-                            <class>org.microemu.examples.fcview.FCViewMIDlet</class>
-                        </MIDlet>
-                        <!--MIDlet>
-                            <name>UnitTests</name>
-                            <class>org.microemu.FileUnitTestsMIDLet</class>
-                            <test>true</test>
-                        </MIDlet-->
-                    </midlets>
-                    <libs>
-                        <lib>${basedir}/../../api/cldcapi11/target/cldcapi11-${project.version}.jar</lib>
-                        <lib>${basedir}/../../api/midpapi20/target/midpapi20-${project.version}.jar</lib>
-                    </libs>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.microemu</groupId>
-                            <artifactId>microemu-javase-swing</artifactId>
-                            <exclude>true</exclude>
-                            <withTrail>true</withTrail>
-                        </dependency>
-                    </dependencies>
-                </configuration>
-            </plugin>
+            
 
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>

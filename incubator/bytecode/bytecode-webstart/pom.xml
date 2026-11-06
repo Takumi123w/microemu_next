@@ -23,11 +23,7 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.microemu</groupId>
-            <artifactId>bytecode-asm</artifactId>
-            <version>0.0.1</version>
-        </dependency>
+        
 
         <dependency>
             <groupId>org.microemu</groupId>

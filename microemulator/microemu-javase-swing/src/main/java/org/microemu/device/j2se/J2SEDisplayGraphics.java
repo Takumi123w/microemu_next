@@ -40,7 +40,7 @@ import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.j2se.J2SEGraphicsSurface;
 
-public class J2SEDisplayGraphics extends javax.microedition.lcdui.Graphics {
+public class J2SEDisplayGraphics extends javax.microedition.lcdui.Graphics implements org.microemu.device.RasterTarget {
 
     // TODO use IntHashMap
     private static HashMap colorCache = new HashMap();
@@ -528,6 +528,20 @@ public class J2SEDisplayGraphics extends javax.microedition.lcdui.Graphics {
         destB = ((srcB * srcA) >> 8) + ((destB * oneMinusSrcA) >> 8);
         
         destData[destOffset] = 0xff000000 | (destR << 16) | (destG << 8) | destB;
+    }
+
+    // org.microemu.device.RasterTarget: direct pixel access for JSR-184 (M3G)
+
+    public int[] getRasterData() {
+        return graphicsSurface.getImageData();
+    }
+
+    public int getRasterWidth() {
+        return graphicsSurface.getImage().getWidth();
+    }
+
+    public int getRasterHeight() {
+        return graphicsSurface.getImage().getHeight();
     }
 
 }

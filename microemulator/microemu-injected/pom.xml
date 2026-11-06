@@ -30,57 +30,10 @@
             </plugin>
 
             <!-- Create application loadable on the phone -->
-            <plugin>
-                <groupId>com.pyx4me</groupId>
-                <artifactId>j2me-maven-plugin</artifactId>
-                <version>${pyx4meVersion}</version>
-                <executions>
-                   <execution>
-                        <!-- Phase before package -->
-                        <phase>test</phase>
-                        <goals>
-                            <goal>package</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <attach>false</attach>
-                    <useWtkLibs>false</useWtkLibs>
-                    <!--wtkHome>${env.WTK_HOME}</wtkHome-->
-                    <proguardPreverify>true</proguardPreverify>
-                    <proguard>false</proguard>
-                    <obfuscate>false</obfuscate>
-                    <proguardOptions>
-                        <options>
-                            <option>-dontoptimize</option>
-                            <option>-keepclasseswithmembers public class org.microemu.* { *; }</option>
-                        </options>
-                    </proguardOptions>
-                    <jarfile>microemu-injected</jarfile>
-                    <classifier>none</classifier>
-                    <libs>
-                        <lib>${basedir}/../api/cldcapi11/target/cldcapi11-${project.version}.jar</lib>
-                        <!--lib>${basedir}/../api/midpapi20/target/midpapi20-${project.version}.jar</lib-->
-                    </libs>
-                </configuration>
-            </plugin>
+            
 
             <!-- jar-with jar -->
-            <plugin>
-               <artifactId>maven-assembly-plugin</artifactId>
-               <version>${assemblyPluginVersion}</version>
-               <executions>
-                   <execution>
-                       <phase>package</phase>
-                       <goals><goal>single</goal></goals>
-                   </execution>
-               </executions>
-               <configuration>
-                   <descriptors>
-                       <descriptor>inject-assembly.xml</descriptor>
-                   </descriptors>
-               </configuration>
-            </plugin>
+            
 
         </plugins>
     </build>
